@@ -13,24 +13,29 @@ app.use(express.json());
 const uri = process.env.ATLAS_URI;
 
 const connectDB = async () => {
-    console.log("Inside")
+    console.log('Invoked')
     try {
-        console.log("Try")
         await mongoose.connect(uri , {
             useNewUrlParser: true,
             useCreateIndex : true,
             useFindAndModify : false,
             useUnifiedTopology : true
         })
-        console.log('MongoDB connected')
+        console.log("Connected to the Databse....")
     } catch (error) {
         console.log(error);
         process.exit(1);
     }
 }; 
 
-
 connectDB();
+
+const exercisesRouter = require('./routes/exercises')
+const usersRouter = require('./routes/users')
+
+app.use('/exercises', exercisesRouter)
+app.use('/users', usersRouter)
+
 
 app.listen(port , () => {
     console.log(`Server running at port: ${port} `);
